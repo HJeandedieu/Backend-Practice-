@@ -1,20 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>About</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>About — Server Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0c0f;
+      --surface: #13151a;
+      --border: #1f2229;
+      --green: #00f5a0;
+      --green-dim: rgba(0, 245, 160, 0.08);
+      --green-glow: rgba(0, 245, 160, 0.25);
+      --amber: #f5a623;
+      --amber-dim: rgba(245, 166, 35, 0.08);
+      --text: #e8eaf0;
+      --muted: #555b6e;
+      --mono: 'Space Mono', monospace;
+      --sans: 'Syne', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 166, 35, 0.05) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0;
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+      50%       { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 560px;
+      animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .breadcrumb {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+    }
+
+    .breadcrumb a {
+      color: var(--green);
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    .breadcrumb a:hover { opacity: 1; }
+
+    .breadcrumb span { margin: 0 0.4rem; }
+
+    h1 {
+      font-family: var(--sans);
+      font-size: clamp(2.4rem, 6vw, 3.4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+    }
+
+    h1 span {
+      color: var(--amber);
+      text-shadow: 0 0 30px rgba(245, 166, 35, 0.3);
+    }
+
+    /* Info cards */
+    .cards {
+      display: grid;
+      gap: 0.75rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.18s; }
+    .card:nth-child(3) { animation-delay: 0.26s; }
+
+    .card-icon {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--amber);
+      background: var(--amber-dim);
+      border: 1px solid rgba(245, 166, 35, 0.15);
+      border-radius: 3px;
+      padding: 0.3rem 0.5rem;
+      white-space: nowrap;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+
+    .card-content .card-title {
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .card-content .card-desc {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin-bottom: 2.5rem;
+    }
+
+    nav a {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      padding: 0.55rem 1.2rem;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: var(--surface);
+      display: inline-block;
+      transition: color 0.2s, border-color 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--green-dim);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--green);
+      border-color: rgba(0, 245, 160, 0.3);
+      box-shadow: 0 0 14px rgba(0, 245, 160, 0.1);
+    }
+
+    nav a:hover::after { opacity: 1; }
+  </style>
 </head>
 <body>
+  <div class="container">
 
-    <h1>About This Server</h1>
-    <p>
-        This is a simple server demo using static HTML and CSS.
+    <p class="breadcrumb">
+      <a href="/">~ / home</a>
+      <span>/</span>
+      about
     </p>
 
+    <h1>About This<br><span>Server.</span></h1>
+
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">STACK</span>
+        <div class="card-content">
+          <p class="card-title">Static HTML &amp; CSS</p>
+          <p class="card-desc">No frameworks. No build tools. Just raw files served directly — fast, portable, and dependency-free.</p>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-icon">PURPOSE</span>
+        <div class="card-content">
+          <p class="card-title">Server Demo</p>
+          <p class="card-desc">A minimal reference project for exploring how a basic HTTP server handles static file routing and responses.</p>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-icon">STATUS</span>
+        <div class="card-content">
+          <p class="card-title">All Systems Nominal</p>
+          <p class="card-desc">Routes are resolving. Headers are clean. You're looking at a <span style="color: var(--green); font-family: var(--mono);">200 OK</span> response right now.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
     <nav>
-        <a href="/">Home</a>
+      <a href="/">← / home</a>
     </nav>
 
+  </div>
 </body>
 </html>
