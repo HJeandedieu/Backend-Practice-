@@ -1,18 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>404 - Not Found</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>404 — Not Found</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0c0f;
+      --surface: #13151a;
+      --border: #1f2229;
+      --green: #00f5a0;
+      --green-dim: rgba(0, 245, 160, 0.08);
+      --red: #ff4d6a;
+      --red-dim: rgba(255, 77, 106, 0.08);
+      --red-glow: rgba(255, 77, 106, 0.2);
+      --text: #e8eaf0;
+      --muted: #555b6e;
+      --mono: 'Space Mono', monospace;
+      --sans: 'Syne', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      overflow: hidden;
+    }
+
+    /* Grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Red glow orb */
+    body::after {
+      content: '';
+      position: fixed;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 77, 106, 0.07) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0;
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+      50%       { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 560px;
+      animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Giant 404 */
+    .glitch-wrap {
+      position: relative;
+      margin-bottom: 0.25rem;
+      display: inline-block;
+    }
+
+    .big-404 {
+      font-family: var(--sans);
+      font-size: clamp(6rem, 20vw, 10rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--red);
+      text-shadow: 0 0 40px var(--red-glow);
+      position: relative;
+      animation: glitch 5s infinite;
+    }
+
+    .big-404::before,
+    .big-404::after {
+      content: '404';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+
+    .big-404::before {
+      color: rgba(0, 245, 160, 0.4);
+      clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+      animation: glitch-top 5s infinite;
+    }
+
+    .big-404::after {
+      color: rgba(255, 77, 106, 0.5);
+      clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
+      animation: glitch-bot 5s infinite;
+    }
+
+    @keyframes glitch {
+      0%, 90%, 100% { transform: none; }
+      92%           { transform: skewX(-1deg); }
+      94%           { transform: skewX(1deg); }
+      96%           { transform: none; }
+    }
+
+    @keyframes glitch-top {
+      0%, 90%, 100% { transform: none; opacity: 0; }
+      92%           { transform: translate(-4px, -2px); opacity: 1; }
+      94%           { transform: translate(4px, 2px); opacity: 1; }
+      96%           { transform: none; opacity: 0; }
+    }
+
+    @keyframes glitch-bot {
+      0%, 90%, 100% { transform: none; opacity: 0; }
+      92%           { transform: translate(4px, 1px); opacity: 1; }
+      94%           { transform: translate(-4px, -1px); opacity: 1; }
+      96%           { transform: none; opacity: 0; }
+    }
+
+    /* Error label */
+    .error-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--red-dim);
+      border: 1px solid rgba(255, 77, 106, 0.2);
+      border-radius: 999px;
+      padding: 0.3rem 0.9rem;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--red);
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+    }
+
+    .error-label .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 6px var(--red);
+      animation: blink 1.2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.2; }
+    }
+
+    h1 {
+      font-family: var(--sans);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+
+    .desc {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+
+    .desc code {
+      color: var(--red);
+      background: var(--red-dim);
+      border: 1px solid rgba(255,77,106,0.15);
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+      font-family: var(--mono);
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin-bottom: 2.5rem;
+    }
+
+    nav a {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      padding: 0.55rem 1.2rem;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: var(--surface);
+      display: inline-block;
+      transition: color 0.2s, border-color 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--green-dim);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--green);
+      border-color: rgba(0, 245, 160, 0.3);
+      box-shadow: 0 0 14px rgba(0, 245, 160, 0.1);
+    }
+
+    nav a:hover::after { opacity: 1; }
+  </style>
 </head>
 <body>
+  <div class="container">
 
-    <h1>404</h1>
-    <p>The page you are looking for does not exist.</p>
+    <div class="glitch-wrap">
+      <div class="big-404">404</div>
+    </div>
+
+    <div class="error-label">
+      <span class="dot"></span>
+      PAGE NOT FOUND
+    </div>
+
+    <h1>Nothing lives here.</h1>
+
+    <p class="desc">
+      The route <code id="path"></code> could not be resolved.<br>
+      It may have been moved, deleted, or never existed.
+    </p>
+
+    <div class="divider"></div>
 
     <nav>
-        <a href="/">Go Back Home</a>
+      <a href="/">← / go back home</a>
     </nav>
 
+  </div>
+
+  <script>
+    document.getElementById('path').textContent = window.location.pathname;
+  </script>
 </body>
 </html>
