@@ -1,14 +1,164 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
- <meta charset="utf-8" />
- <title></title>
+  <meta charset="utf-8" />
+  <title>Student Registration</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1a1a2e;
+      --paper: #f7f4ef;
+      --accent: #c8793a;
+      --accent-light: #f0e0d0;
+      --border: #d4c9b8;
+      --muted: #888;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background-color: var(--paper);
+      background-image:
+        radial-gradient(circle at 20% 80%, rgba(200, 121, 58, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(26, 26, 46, 0.05) 0%, transparent 50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Sans', sans-serif;
+      padding: 2rem;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 3rem 3.5rem;
+      width: 100%;
+      max-width: 460px;
+      box-shadow: 6px 6px 0 var(--ink), 0 2px 30px rgba(0,0,0,0.06);
+      animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-header {
+      margin-bottom: 2.5rem;
+      border-bottom: 2px solid var(--ink);
+      padding-bottom: 1.25rem;
+    }
+
+    .card-header .label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+
+    .card-header h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.9rem;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+
+    .field {
+      margin-bottom: 1.5rem;
+      animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .field:nth-child(1) { animation-delay: 0.1s; }
+    .field:nth-child(2) { animation-delay: 0.18s; }
+
+    label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--ink);
+      background: var(--paper);
+      border: 1.5px solid var(--border);
+      border-radius: 2px;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--ink);
+      background: #fff;
+      box-shadow: 3px 3px 0 var(--accent-light);
+    }
+
+    input[type="text"]::placeholder { color: #bbb; }
+
+    .submit-wrap {
+      margin-top: 2rem;
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      padding: 0.85rem 1.5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--ink);
+      border: 2px solid var(--ink);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, transform 0.1s, box-shadow 0.2s;
+    }
+
+    input[type="submit"]:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 4px 4px 0 var(--ink);
+      transform: translate(-1px, -1px);
+    }
+
+    input[type="submit"]:active {
+      transform: translate(0, 0);
+      box-shadow: none;
+    }
+  </style>
 </head>
 <body>
- <form action="/submit-student-data" method="post">
- First Name: <input name="firstName" type="text" /> <br />
- Last Name: <input name="lastName" type="text" /> <br />
- <input type="submit" />
- </form>
+  <div class="card">
+    <div class="card-header">
+      <p class="label">Enrollment</p>
+      <h1>Student Registration</h1>
+    </div>
+    <form action="/submit-student-data" method="post">
+      <div class="field">
+        <label for="firstName">First Name</label>
+        <input id="firstName" name="firstName" type="text" placeholder="e.g. Jane" />
+      </div>
+      <div class="field">
+        <label for="lastName">Last Name</label>
+        <input id="lastName" name="lastName" type="text" placeholder="e.g. Doe" />
+      </div>
+      <div class="submit-wrap">
+        <input type="submit" value="Submit Registration" />
+      </div>
+    </form>
+  </div>
 </body>
 </html>

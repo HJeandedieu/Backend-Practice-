@@ -10,8 +10,8 @@ app.get("/", (req,res)=>{
 })
 
 app.post("/submit-student-data", (req,res)=>{   
-    res.send(req.body.firstName + " " + req.body.lastName + " received")
-    console.log(req.body.firstName + " " + req.body.lastName + " received");
+    res.send(req.body.firstName + " " + req.body.lastName + " enrolled successfully");
+    console.log(req.body.firstName + " " + req.body.lastName + " enrolled");
 })
 
 app.listen(port, ()=>{
